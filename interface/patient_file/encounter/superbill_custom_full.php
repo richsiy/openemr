@@ -144,10 +144,12 @@ if (!empty($search)) {
 
 $crow = sqlQuery("SELECT count(*) AS count FROM codes WHERE $where");
 $count = $crow['count'];
-if ($fstart >= $count) $fstart -= $pagesize;
-if ($fstart < 0) $fstart = 0;
+//if ($fstart >= $count) $fstart -= $pagesize;
+//if ($fstart < 0) $fstart = 0;
+$fstart = ($count <= $pagesize ? 0 : ($fstart >= $count ? $fstart - $pagesize : ($fstart < 0 ? 0 : $fstart) ) );
 $fend = $fstart + $pagesize;
-if ($fend > $count) $fend = $count;
+if ($fend > $fstart + $count) $fend = $fstart + $count;
+elseif ($fend > $count) $fend = $count;
 ?>
 
 <html>
